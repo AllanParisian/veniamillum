@@ -1,0 +1,263 @@
+
+query GetBridgeTransactions($chainIDTo: [Int],$chainIDFrom: [Int], $addressTo: String, $addressFrom: String, $maxAmount: Int, $minAmount: Int, $maxAmountUSD: Int, $minAmountUSD: Int, $startTime: Int, $endTime: Int, $txHash: String, $kappa: String, $pending: Boolean, $page: Int, $tokenAddressFrom: [String], $tokenAddressTo: [String], $useMv: Boolean) {
+  response: bridgeTransactions(
+    chainIDTo: $chainIDTo
+    chainIDFrom: $chainIDFrom
+    addressTo: $addressTo
+    addressFrom: $addressFrom
+    maxAmount: $maxAmount
+    minAmount: $minAmount
+    maxAmountUsd: $maxAmountUSD
+    minAmountUsd: $minAmountUSD
+    startTime: $startTime
+    endTime: $endTime
+    txnHash: $txHash
+    kappa: $kappa
+    pending: $pending
+    page: $page
+    tokenAddressTo: $tokenAddressTo
+    tokenAddressFrom: $tokenAddressFrom
+    useMv: $useMv
+  ) {
+    fromInfo {
+      chainID
+      destinationChainID
+      address
+      txnHash
+      value
+      formattedValue
+      USDValue
+      tokenAddress
+      tokenSymbol
+      blockNumber
+      time
+      formattedTime
+    }
+    toInfo {
+      chainID
+      address
+      txnHash
+      value
+      formattedValue
+      USDValue
+      tokenAddress
+      tokenSymbol
+      blockNumber
+      time
+      formattedTime
+    }
+    kappa
+    pending
+    swapSuccess
+  }
+}
+
+
+
+query GetCountByChainId($chainID: Int, $address: String, $direction: Direction, $hours: Int) {
+  response: countByChainId(
+    chainID: $chainID
+    address: $address
+    direction: $direction
+    hours: $hours
+  ) {
+    count
+    chainID
+    }
+}
+
+query GetCountByTokenAddress($chainID: Int, $address: String, $direction: Direction, $hours: Int) {
+  response: countByTokenAddress(
+    chainID: $chainID
+    address: $address
+    direction: $direction
+    hours: $hours
+  ) {
+    chainID
+    tokenAddress
+    count
+    }
+}
+
+query GetAddressRanking($hours: Int) {
+  response: addressRanking(
+    hours: $hours
+  ) {
+    address
+    count
+  }
+}
+
+query GetRankedChainIDsByVolume($duration: Duration) {
+  response: rankedChainIDsByVolume(
+    duration: $duration
+  ) {
+    chainID
+    total
+  }
+}
+
+
+
+
+query GetAmountStatistic($type: StatisticType!, $platform: Platform, $duration: Duration, $chainID: Int, $address: String, $tokenAddress: String, $useMv: Boolean) {
+  response: amountStatistic(
+    type: $type
+    duration: $duration
+    platform: $platform
+    chainID: $chainID
+    address: $address
+    tokenAddress: $tokenAddress
+    useMv: $useMv
+  ) {
+    value
+  }
+}
+query GetDailyStatisticsByChain($chainID: Int, $type: DailyStatisticType, $duration: Duration, $platform: Platform, $useMv: Boolean) {
+  response: dailyStatisticsByChain(
+    chainID: $chainID
+    type: $type
+    duration: $duration
+    platform: $platform
+    useMv: $useMv
+  ) {
+    date
+    ethereum
+    optimism
+    cronos
+    bsc
+    polygon
+    fantom
+    boba
+    metis
+    moonbeam
+    moonriver
+    klaytn
+    arbitrum
+    avalanche
+    dfk
+    aurora
+    harmony
+    canto
+    dogechain
+    total
+  }
+}
+
+query GetMessageBusTransactions($chainID: [Int], $contractAddress: String, $startTime: Int, $endTime: Int, $txHash: String, $messageID: String, $pending: Boolean, $reverted: Boolean, $page: Int) {
+  response: messageBusTransactions(
+    chainID: $chainID
+    contractAddress: $contractAddress
+    startTime: $startTime
+    endTime: $endTime
+    txnHash: $txHash
+    messageID: $messageID
+    pending: $pending
+    reverted: $reverted
+    page: $page
+  ) {
+    fromInfo {
+      chainID
+      chainName
+      destinationChainID
+      destinationChainName
+      contractAddress
+      txnHash
+      message
+      messageType{
+        ... on TearType {
+          recipient
+          amount
+        }
+        ... on HeroType {
+          recipient
+          heroID
+        }
+        ... on PetType {
+          recipient
+          petID
+          name
+        }
+        ... on UnknownType {
+          known
+        }
+      }
+      blockNumber
+      time
+      formattedTime
+
+    }
+    toInfo {
+      chainID
+      chainName
+      contractAddress
+      txnHash
+      message
+      messageType {
+        ... on TearType {
+          recipient
+          amount
+        }
+        ... on HeroType {
+          recipient
+          heroID
+        }
+        ... on PetType {
+          recipient
+          petID
+          name
+        }
+        ... on UnknownType {
+          known
+        }
+      }
+      blockNumber
+      time
+      formattedTime
+      revertedReason
+    }
+    messageID
+    pending
+  }
+}
+
+
+query GetAddressData($address: String!) {
+  response: addressData(
+    address: $address
+  ) {
+    bridgeVolume
+    bridgeFees
+    bridgeTxs
+    swapVolume
+    swapFees
+    swapTxs
+    rank
+    earliestTx
+    chainRanking {
+      chainID
+      volumeUsd
+      rank
+    }
+    dailyData{
+      date
+      count
+    }
+  }
+}
+
+query GetLeaderboard($duration: Duration, $chainID: Int, $useMv: Boolean, $page: Int) {
+  response: leaderboard(
+    duration: $duration
+    chainID: $chainID
+    useMv: $useMv
+    page: $page
+  ) {
+    address
+    volumeUSD
+    fees
+    txs
+    rank
+    avgVolumeUSD
+  }
+}

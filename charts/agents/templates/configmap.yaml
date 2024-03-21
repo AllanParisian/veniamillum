@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "agents.fullname" . }}-{{ .Release.Name }}
+  labels:
+    app: {{ include "agents.name" . }}
+    chart: "{{ .Chart.Name }}"
+    release: "{{ .Release.Name }}"
+    heritage: {{ .Release.Service }}
+data:
+{{- if eq $.Values.executor.type "embedded"  }}
+{{ toYaml .Values.executor_embedded_files | indent 2}}
+{{- end }}
+{{- if eq $.Values.executor.type "remote-existing" }}
+{{ toYaml .Values.executor_remote_existing_files | indent 2}}
+{{- end }}
+{{- if eq $.Values.executor.type "remote-fresh" }}
+{{ toYaml .Values.executor_remote_fresh_files | indent 2}}
+{{- end }}
+{{- if .Values.notary_files }}
+{{ toYaml .Values.notary_files | indent 2}}
+{{- end }}
+{{- if .Values.guard_files }}
+{{ toYaml .Values.guard_files | indent 2 }}
+{{- end }}

@@ -1,0 +1,236 @@
+query GetLogs ($chain_id: Int!, $page: Int!) {
+    response: logs (chain_id: $chain_id, page: $page) {
+        contract_address
+        chain_id
+        topics
+        data
+        block_number
+        tx_hash
+        tx_index
+        block_hash
+        index
+        removed
+    }
+}
+
+query GetLogsRange ($chain_id: Int!, $start_block: Int!, $end_block: Int!, $page: Int!) {
+    response: logsRange (chain_id: $chain_id, start_block: $start_block, end_block: $end_block, page: $page) {
+        contract_address
+        chain_id
+        topics
+        data
+        block_number
+        tx_hash
+        tx_index
+        block_hash
+        index
+        removed
+    }
+}
+
+query GetLogsResolvers ($chain_id: Int!, $page: Int!) {
+    response: logs (chain_id: $chain_id, page: $page) {
+        receipt {
+            chain_id
+            type
+            post_state
+            status
+            cumulative_gas_used
+            bloom
+            tx_hash
+            contract_address
+            gas_used
+            block_number
+            transaction_index
+        }
+        transaction {
+            chain_id
+            tx_hash
+            protected
+            type
+            data
+            gas
+            gas_price
+            gas_tip_cap
+            gas_fee_cap
+            value
+            nonce
+            to
+        }
+    }
+}
+
+query GetReceipts ($chain_id: Int!, $page: Int!, $block_number: Int!) {
+    response: receipts (chain_id: $chain_id, page: $page, block_number: $block_number) {
+        chain_id
+        type
+        post_state
+        status
+        cumulative_gas_used
+        bloom
+        tx_hash
+        contract_address
+        gas_used
+        block_number
+        transaction_index
+    }
+}
+
+query GetReceiptsRange ($chain_id: Int!, $start_block: Int!, $end_block: Int!, $page: Int!) {
+    response: receiptsRange (chain_id: $chain_id, start_block: $start_block, end_block: $end_block, page: $page) {
+        chain_id
+        type
+        post_state
+        status
+        cumulative_gas_used
+        bloom
+        tx_hash
+        contract_address
+        gas_used
+        block_number
+        transaction_index
+    }
+}
+
+query GetReceiptsResolvers ($chain_id: Int!, $page: Int!) {
+    response: receipts (chain_id: $chain_id, page: $page) {
+        logs {
+            contract_address
+            chain_id
+            topics
+            data
+            block_number
+            tx_hash
+            tx_index
+            block_hash
+            index
+            removed
+        }
+        transaction {
+            chain_id
+            tx_hash
+            protected
+            type
+            data
+            gas
+            gas_price
+            gas_tip_cap
+            gas_fee_cap
+            value
+            nonce
+            to
+        }
+    }
+}
+
+query GetTransactions ($chain_id: Int!, $page: Int!) {
+    response: transactions (chain_id: $chain_id, page: $page) {
+        chain_id
+        tx_hash
+        protected
+        type
+        data
+        gas
+        gas_price
+        gas_tip_cap
+        gas_fee_cap
+        value
+        nonce
+        to
+        timestamp
+        sender
+    }
+}
+
+query GetTransactionsRange ($chain_id: Int!, $start_block: Int!, $end_block: Int!, $page: Int!) {
+    response: transactionsRange (chain_id: $chain_id, start_block: $start_block, end_block: $end_block, page: $page) {
+        chain_id
+        tx_hash
+        protected
+        type
+        data
+        gas
+        gas_price
+        gas_tip_cap
+        gas_fee_cap
+        value
+        nonce
+        to
+        timestamp
+        sender
+    }
+}
+
+query GetTransactionsResolvers ($chain_id: Int!, $page: Int!) {
+    response: transactions (chain_id: $chain_id, page: $page) {
+        receipt {
+            chain_id
+            type
+            post_state
+            status
+            cumulative_gas_used
+            bloom
+            tx_hash
+            contract_address
+            gas_used
+            block_number
+            transaction_index
+        }
+        logs {
+            contract_address
+            chain_id
+            topics
+            data
+            block_number
+            tx_hash
+            tx_index
+            block_hash
+            index
+            removed
+        }
+    }
+}
+
+
+query GetBlockTime ($chain_id: Int!, $block_number: Int!) {
+    response: blockTime (chain_id: $chain_id, block_number: $block_number)
+}
+
+# GetLastStoredBlockNumber returns the last stored block number for a given chain
+# this is retrieved from the block_times table.
+query GetLastStoredBlockNumber ($chain_id: Int!) {
+    response: lastStoredBlockNumber (chain_id: $chain_id)
+}
+
+# GetFirstStoredBlockNumber returns the first stored block number for a given chain
+# this is retrieved from the block_times table.
+query GetFirstStoredBlockNumber ($chain_id: Int!) {
+    response: firstStoredBlockNumber (chain_id: $chain_id)
+}
+
+
+query GetTxSender ($chain_id: Int!, $tx_hash: String!) {
+    response: txSender (chain_id: $chain_id, tx_hash: $tx_hash)
+}
+
+
+query GetLastIndexed ($chain_id: Int!, $contract_address: String!) {
+  response: lastIndexed (chain_id: $chain_id, contract_address: $contract_address)
+}
+
+query GetLastConfirmedBlockNumber ($chain_id: Int!) {
+  response: lastConfirmedBlockNumber (chain_id: $chain_id)
+}
+
+
+query GetLogCount ($chain_id: Int!, $contract_address: String!) {
+  response: logCount (chain_id: $chain_id, contract_address: $contract_address)
+}
+
+query GetReceiptCount ($chain_id: Int!) {
+  response: receiptCount(chain_id: $chain_id)
+}
+
+query GetBlockTimeCount ($chain_id: Int!) {
+  response: blockTimeCount (chain_id: $chain_id)
+}
